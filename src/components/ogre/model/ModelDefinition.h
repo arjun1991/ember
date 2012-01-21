@@ -52,6 +52,7 @@ struct AnimationPartDefinition;
 struct ActivationDefinition;
 struct AttachPointDefinition;
 struct ViewDefinition;
+struct PoseDefinition;
 
 typedef std::map<std::string, Model*> ModelInstanceStore;
 
@@ -65,6 +66,7 @@ typedef std::vector<ActionDefinition*> ActionDefinitionsStore;
 typedef std::vector<AttachPointDefinition> AttachPointDefinitionStore;
 typedef std::vector<ActivationDefinition*> ActivationDefinitionStore;
 typedef std::map<std::string, ViewDefinition*> ViewDefinitionStore;
+typedef std::map<std::string, PoseDefinition> PoseDefinitionStore;
 typedef std::map<std::string, std::string> StringParamStore;
 
 /**
@@ -192,6 +194,19 @@ struct ViewDefinition
 	The distance of the camera from the Model.
 	*/
 	float Distance;
+};
+
+struct PoseDefinition
+{
+	/**
+	 * @brief The rotation of the model around the translated origin.
+	 */
+	Ogre::Quaternion Rotate;
+
+	/**
+	 * @brief The translation of the original model, to provide a new origin.
+	 */
+	Ogre::Vector3 Translate;
 };
 
 struct AttachPointDefinition
@@ -506,6 +521,12 @@ public:
 	 */
 	const RenderingDefinition* getRenderingDefinition() const;
 
+	const PoseDefinitionStore& getPoseDefinitions() const;
+
+	void addPoseDefinition(const std::string& name, const PoseDefinition& definition);
+
+	void removePoseDefinition(const std::string& name);
+
 private:
 
 
@@ -587,6 +608,7 @@ private:
 	ActionDefinitionsStore mActions;
 	ParticleSystemSet mParticleSystems;
 	LightSet mLights;
+	PoseDefinitionStore mPoseDefinitions;
 
 	AttachPointDefinitionStore mAttachPoints;
 

@@ -38,7 +38,7 @@ namespace OgreView {
 namespace Model {
 
 ModelDefinition::ModelDefinition(Ogre::ResourceManager* creator, const Ogre::String& name, Ogre::ResourceHandle handle,
-    const Ogre::String& group, bool isManual, Ogre::ManualResourceLoader* loader) 
+    const Ogre::String& group, bool isManual, Ogre::ManualResourceLoader* loader)
     : Resource(creator, name, handle, group, isManual, loader)
     , mRenderingDistance(0.0f)
     , mUseScaleOf(MODEL_ALL)
@@ -71,7 +71,7 @@ ModelDefinition::~ModelDefinition()
 //	delete(mContentOffset);
     // have to call this here reather than in Resource destructor
     // since calling virtual methods in base destructors causes crash
-    unload(); 
+    unload();
 }
 
 void ModelDefinition::loadImpl(void)
@@ -152,19 +152,32 @@ void ModelDefinition::removeViewDefinition(const std::string name)
 	}*/
 }
 
+const PoseDefinitionStore& ModelDefinition::getPoseDefinitions() const
+{
+	return mPoseDefinitions;
+}
 
+void ModelDefinition::addPoseDefinition(const std::string& name, const PoseDefinition& definition)
+{
+	mPoseDefinitions[name] = definition;
+}
+
+void ModelDefinition::removePoseDefinition(const std::string& name)
+{
+	mPoseDefinitions.erase(name);
+}
 
 const Ogre::Vector3& ModelDefinition::getTranslate() const
 {
 	return mTranslate;
 }
-	
+
 void ModelDefinition::setTranslate(const Ogre::Vector3 translate)
 {
 	mTranslate = translate;
 }
-	
-	
+
+
 bool ModelDefinition::getShowContained() const
 {
 	return mShowContained;
@@ -175,7 +188,7 @@ void ModelDefinition::setShowContained(bool show)
 	mShowContained = show;
 }
 
-	
+
 
 const Ogre::Quaternion& ModelDefinition::getRotation() const
 {
@@ -202,7 +215,7 @@ void ModelDefinition::reloadAllInstances()
 //	std::for_each(mModelInstances.begin(), mModelInstances.end(), std::mem_fun(&OgreView::Model::Model::reload));
 }
 
-	
+
 SubModelDefinition* ModelDefinition::createSubModelDefinition(const std::string& meshname)
 {
 	SubModelDefinition* def = new SubModelDefinition(meshname, *this);
@@ -272,7 +285,7 @@ void ModelDefinition::removeActionDefinition(ActionDefinition* def)
 
 
 template <typename T, typename T1>
-void ModelDefinition::removeDefinition(T* def, T1& store) 
+void ModelDefinition::removeDefinition(T* def, T1& store)
 {
 	typename T1::iterator I = std::find(store.begin(), store.end(), def);
 	if (I != store.end()) {
