@@ -302,6 +302,15 @@ function SettingsWidget:buildSettingsUi()
 					representationFactory = function(value) return Representations.VarconfCheckboxRepresentation:new_local(value) end,
 				},
 				{
+					label = "Display FPS",
+					helpString = "Sets whether or not FPS is shown in top-right corner.",
+					
+					section = "fps",
+					key = "showfps",
+					
+					representationFactory = function(value) return Representations.VarconfCheckboxRepresentation:new_local(value) end,
+				},
+				{
 					label = "Preferred terrain technique",
 					helpString = "The preferred terrain technique. Available values are: ShaderNormalMapped, Shader, Base",
 					

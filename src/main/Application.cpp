@@ -51,6 +51,9 @@
 #include "ConfigBoundLogObserver.h"
 
 #include "components/lua/tolua++.h"
+#include "FpsTracker.h"
+#include "components/ogre/GUIManager.h"
+
 
 TOLUA_API int tolua_Ogre_open(lua_State* tolua_S);
 TOLUA_API int tolua_Eris_open(lua_State* tolua_S);
@@ -141,6 +144,78 @@ public:
 	}
 };
 
+
+
+template<> FpsTracker *Singleton<FpsTracker>::ms_Singleton = 0;
+FpsTracker::FpsTracker() : mCurrentFps(0), fpsVisible(false)
+{
+	defaultScheme="EmberLook";
+	mSheet=OgreView::GUIManager::getSingleton().getMainSheet();
+	mWindowManager = &CEGUI::WindowManager::getSingleton();
+	
+	fpsDialog = static_cast<CEGUI::FrameWindow *>(mWindowManager->createWindow( defaultScheme+ "/StaticText", "fpsWindow" ));
+	fpsDialog->setPosition(CEGUI::UVector2(CEGUI::UDim(0.5f, -100), CEGUI::UDim(0.0f, 0)));
+	fpsDialog->setSize(CEGUI::UVector2(CEGUI::UDim(0.0f, 100), CEGUI::UDim(0.0f, 50)));
+	//fpsDialog->setProperty("HorzFormatting", "WordWrapLeftAligned");
+	fpsDialog->setText("Undefined");
+	mSheet->addChildWindow(fpsDialog);
+	
+	timeAtLastUpdate=Time::currentTimeMillis();
+	currentTimeMillis=Time::currentTimeMillis();
+	
+	//Config event Listener set up here that listens to FPS enabled/disabled event from the menu.
+	registerConfigListener("fps", "showfps", sigc::mem_fun(*this, &FpsTracker::Config_Fps_Visibility), true);
+	
+}
+
+
+void FpsTracker::Config_Fps_Visibility(const std::string& section, const std::string& key, varconf::Variable& variable)
+{
+	//Cast to bool to check if FPS should be visible, this also means updating the text on this window through setText starts.
+	fpsVisible = static_cast<bool>(variable);
+	if(fpsVisible==true)
+	{
+		fpsDialog->setVisible(true);
+	}
+	else
+	{
+		fpsDialog->setVisible(false);
+	}
+}
+	
+void FpsTracker::setCurrentFps(double fps)
+{
+	currentTimeMillis=Time::currentTimeMillis();
+	mCurrentFps=fps;
+	if(fps<50.0)
+	{
+		checkFpsOptimum();
+	}
+	
+	//Update the window only when it is visible and a time delay has passed since last update.
+	if(fpsVisible&(((double)currentTimeMillis-timeAtLastUpdate)>500))
+	{
+		timeAtLastUpdate=Time::currentTimeMillis();
+		std::stringstream ss;
+		ss <<"   FPS: "<<(int)fps;
+		fpsDialog->setText(ss.str());
+	}
+	return;
+}
+    
+double FpsTracker::getCurrentFps()
+{
+	return mCurrentFps;
+}
+    
+void FpsTracker::checkFpsOptimum()
+{
+	//future implementation for dynamic adjustment of graphic level
+}
+    
+
+
+
 template<> Application *Singleton<Application>::ms_Singleton = 0;
 
 Application::Application(const std::string prefix, const std::string homeDir, const ConfigMap& configSettings) :
@@ -208,6 +283,10 @@ void Application::mainLoopStep(long minMillisecondsPerFrame)
 		if (minMillisecondsPerFrame > 0) {
 			currentTimeMillis = Time::currentTimeMillis();
 			long long millisecondSinceLastFrame = currentTimeMillis - mLastTimeMainLoopStepEnded;
+			if(millisecondSinceLastFrame!=0)
+			{
+				FpsTracker::getSingleton().setCurrentFps(1/(double)millisecondSinceLastFrame*1000);
+			}
 			if (millisecondSinceLastFrame < minMillisecondsPerFrame) {
 				input.sleep(minMillisecondsPerFrame - millisecondSinceLastFrame);
 			}
@@ -234,6 +313,7 @@ void Application::mainLoop()
 	mLastTimeInputProcessingEnd = currentTimeMillis;
 	mLastTimeMainLoopStepEnded = 0;
 	DesiredFpsListener desiredFpsListener;
+	FpsTracker mFps;
 	while (mShouldQuit == false) {
 		mainLoopStep(desiredFpsListener.getMillisecondsPerFrame());
 	}
