@@ -24,6 +24,7 @@ libEmberOgre_a_SOURCES = \
 	environment/ShrubberyFoliage.cpp environment/SimpleEnvironment.cpp environment/SimpleWater.cpp environment/Sun.cpp environment/Tree.cpp environment/Water.cpp \
 	environment/OceanRepresentation.cpp environment/OceanAction.cpp environment/SimpleWaterCollisionDetector.cpp \
 	environment/ExclusiveImposterPage.cpp \
+	environment/FoliageLevelManager.cpp \
 	gui/ActiveWidgetHandler.cpp gui/CEGUILogger.cpp gui/RenderedColourStringTextComponent.cpp gui/ColouredRenderedStringParser.cpp gui/CursorWorldListener.cpp \
 \
 	mapping/EmberEntityMappingManager.cpp mapping/XMLEntityMappingDefinitionSerializer.cpp \
@@ -113,7 +114,7 @@ noinst_HEADERS = \
 \
 	environment/CaelumEnvironment.h environment/CaelumSky.h environment/CaelumSun.h \
 	environment/EmberEntityLoader.h environment/Environment.h environment/Foliage.h environment/FoliageBase.h environment/FoliageLayer.h environment/FoliageLoader.h \
-	environment/Forest.h environment/GrassFoliage.h environment/LensFlare.h environment/ShrubberyFoliage.h \
+	environment/Forest.h environment/GrassFoliage.h environment/LensFlare.h environment/ShrubberyFoliage.h environment/FoliageLevelManager.h \
 	environment/SimpleEnvironment.h environment/SimpleWater.h environment/Sun.h environment/Tree.h environment/Water.h environment/OceanRepresentation.h \
 	environment/OceanAction.h environment/SimpleWaterCollisionDetector.h environment/ExclusiveImposterPage.h environment/IEnvironmentProvider.h \
 \
