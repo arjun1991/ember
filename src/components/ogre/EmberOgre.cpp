@@ -78,6 +78,7 @@
 #include "authoring/EntityRecipeManager.h"
 
 #include "ShaderManager.h"
+#include "AutoGraphicsLevelManager.h"
 
 //#include "jesus/Jesus.h"
 //#include "jesus/XMLJesusSerializer.h"
@@ -138,6 +139,7 @@ EmberOgre::EmberOgre() :
 		mInput(0), mRoot(0), mSceneMgr(0), mWindow(0), mScreen(0), mShaderManager(0), mGeneralCommandMapper(std::auto_ptr < InputCommandMapper > (new InputCommandMapper("general"))), mSoundManager(0), mGUIManager(0), mModelDefinitionManager(0), mEntityMappingManager(0), mTerrainLayerManager(0), mEntityRecipeManager(0),
 		//mJesus(0),
 		mLogObserver(0), mMaterialEditor(0), mModelRepresentationManager(0), mScriptingResourceProvider(0), mSoundResourceProvider(0),
+		mAutomaticGraphicsLevelManager(0),
 		//mCollisionManager(0),
 		//mCollisionDetectorVisualizer(0),
 		mResourceLoader(0), mOgreLogManager(0), mIsInPausedMode(false), mOgreMainCamera(0), mWorld(0)
@@ -182,8 +184,8 @@ EmberOgre::~EmberOgre()
 	// 		mRoot->getRenderSystem()->destroyRenderTarget(mWindow->getName());
 	// 	}
 
+	delete mAutomaticGraphicsLevelManager;
 	delete mShaderManager;
-
 	delete mScreen;
 
 	if (mOgreSetup.get()) {
@@ -384,6 +386,7 @@ bool EmberOgre::setup(Input& input, MainLoopController& mainLoopController)
 
 		// Create shader manager
 		mShaderManager = new ShaderManager;
+		mAutomaticGraphicsLevelManager = new AutomaticGraphicsLevelManager;
 
 		//should media be preloaded?
 		if (preloadMedia) {
@@ -611,6 +614,12 @@ ShaderManager* EmberOgre::getShaderManager() const
 {
 	return mShaderManager;
 }
+
+AutomaticGraphicsLevelManager* EmberOgre::getAutomaticGraphicsLevelManager() const
+{
+	return mAutomaticGraphicsLevelManager;
+}
+
 
 void EmberOgre::Application_ServicesInitialized()
 {
