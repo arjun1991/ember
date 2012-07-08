@@ -57,6 +57,11 @@ public:
 
 protected:
 	/**
+	 * @brief Lowers the graphics technique of all materials.
+	 */
+	bool lowerTechnique(int step);
+	
+	/**
 	 * @brief Checks level against this component's threshold value to determine change in material lod.
 	 * This function is used to listen to the changes required by the automatic graphics detail system.
 	 */

@@ -3,6 +3,8 @@
 #include "components/ogre/AutoGraphicsLevelManager.h"
 
 #include "OgreCamera.h"
+#include "OgreMaterialManager.h"
+#include "OgreTechnique.h
 
 #include "sigc++/signal.h"
 
@@ -30,6 +32,22 @@ bool LodLevelManager::setLodBiasAll(float factor)
 
 	mMainCamera.setLodBias(factor);
 }
+
+bool LodLevelManager::lowerTechnique(int step)
+{
+	Ogre::ResourceManager::ResourceMapIterator resourcesI = Ogre::MaterialManager::getSingleton().getResourceIterator();
+	while(resourcesI.hasMoreElements()) {
+		resourcesI.moveNext();
+		Ogre::MaterialPtr material = static_cast<Ogre::MaterialPtr>(resourcesI.peekNextValue());
+		std::cout<<"\nMaterial : "<<material->getName()<<" \n";
+		Ogre::Material::TechniqueIterator techniquesI = material->getSupportedTechniqueIterator();
+		while(techniquesI.hasMoreElements()) {
+			techniquesI.moveNext();
+			std::cout<<"||Technique: "<<techniquesI.peekNext()->getName();
+		}
+	}
+}
+
 
 bool LodLevelManager::changeLevel(float level)
 {
