@@ -7,24 +7,6 @@ function AutomaticGraphicsSettings:buildWidget()
 	
 	self.window = self.widget:getWindow("MainFrame")
 	self.widget:registerConsoleVisibilityToggleCommand("autosettings")
-
-	local mainLayoutWindow = CEGUI.WindowManager:getSingleton():createWindow("VerticalLayoutContainer")
-	
-	local lineLayoutWindow = CEGUI.WindowManager:getSingleton():createWindow("HorizontalLayoutContainer")
-	
-	local label = CEGUI.WindowManager:getSingleton():createWindow("EmberLook/StaticText")
-	label:setText("Foliage density factor: ")
-	label:setProperty("UnifiedSize", "{{0.3, 0.0}, {0.0, 30.0}}")
-
-	lineLayoutWindow:addChildWindow(label)
-	
-	local slider = CEGUI.WindowManager:getSingleton():createWindow("EmberLook/Slider")
-	slider:setClickStep("0.05")
-	
-	lineLayoutWindow:addChildWindow(slider)
-	
-	mainLayoutWindow:addChildWindow(lineLayoutWindow)
-	self.window:addChildWindow(mainLayoutWindow)
 end
 
 function AutomaticGraphicsSettings:shutdown()

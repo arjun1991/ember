@@ -1,20 +1,40 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <GUILayout>
-	<Window Name='MainFrame' Type='EmberLook/FrameWindow'>
-		<Property Name='UnifiedAreaRect' Value='{{0,392},{0,178},{0,904},{0,564}}'/>
-		<Property Name='Text' Value='Automatic Graphics Settings'/>
-		<Window Name='MainFrame/Ok' Type='EmberLook/Button'>
-			<Property Name='UnifiedAreaRect' Value='{{0,8},{0,304},{0,108},{0,337}}'/>
-			<Property Name='Text' Value='Ok'/>
-		</Window>
-		<Window Name='MainFrame/Apply' Type='EmberLook/Button'>
-			<Property Name='UnifiedAreaRect' Value='{{0,120},{0,304},{0,220},{0,337}}'/>
-			<Property Name='Text' Value='Apply'/>
-			<Property Name='Disabled' Value='True'/>
-		</Window>
-		<Window Name='MainFrame/Cancel' Type='EmberLook/Button'>
-			<Property Name='UnifiedAreaRect' Value='{{0,233},{0,304},{0,333},{0,337}}'/>
-			<Property Name='Text' Value='Cancel'/>
-		</Window>
-	</Window>
+    <Window Name="MainFrame" Type="EmberLook/FrameWindow">
+        <Property Name="UnifiedAreaRect" Value="{{0,392},{0,178},{0,904},{0,564}}" />
+        <Property Name="Text" Value="Automatic Graphics Settings" />
+        <Window Name="MainFrame/Ok" Type="EmberLook/Button">
+            <Property Name="UnifiedAreaRect" Value="{{0,8},{0,304},{0,108},{0,337}}" />
+            <Property Name="Text" Value="Ok" />
+        </Window>
+        <Window Name="MainFrame/Apply" Type="EmberLook/Button">
+            <Property Name="UnifiedAreaRect" Value="{{0,120},{0,304},{0,220},{0,337}}" />
+            <Property Name="Text" Value="Apply" />
+            <Property Name="Disabled" Value="True" />
+        </Window>
+        <Window Name="MainFrame/Cancel" Type="EmberLook/Button">
+            <Property Name="UnifiedAreaRect" Value="{{0,233},{0,304},{0,333},{0,337}}" />
+            <Property Name="Text" Value="Cancel" />
+        </Window>
+        <Window Name="MainFrame/MainLayoutContainer" Type="VerticalLayoutContainer">
+            <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Window Name="MainFrame/MainLayoutContainer/FoliageDensityContainer" Type="HorizontalLayoutContainer">
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,20},{1,0},{0.1,20}}" />
+                <Window Name="MainFrame/MainLayoutContainer/FoliageDensityContainer/FoliageDensityLabel" Type="EmberLook/StaticText">
+                    <Property Name="UnifiedAreaRect" Value="{{0,20},{0,0},{0.4,0},{0.1,0}}" />
+                    <Property Name="Text" Value="Foliage Density" />
+                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                    <Property Name="HorzScrollPageSize" Value="250" />
+                    <Property Name="HorzScrollPosition" Value="0" />
+                    <Property Name="VertScrollPageSize" Value="32" />
+                    <Property Name="VertScrollPosition" Value="0" />
+                    <Property Name="HorzScrollDocumentSize" Value="142" />
+                    <Property Name="VertScrollDocumentSize" Value="21.7292" />
+                </Window>
+                <Window Name="MainFrame/MainLayoutContainer/FoliageDensityContainer/FoliageDensitySlider" Type="EmberLook/Slider">
+                    <Property Name="UnifiedAreaRect" Value="{{0.6,-10},{0,0},{1,-20},{0.1,0}}" />
+                </Window>
+            </Window>
+        </Window>
+    </Window>
 </GUILayout>
