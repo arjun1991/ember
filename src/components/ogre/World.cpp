@@ -28,6 +28,8 @@
 #include "EmberEntity.h"
 #include "EmberOgreSignals.h"
 #include "ForestRenderingTechnique.h"
+#include "AutoGraphicsLevelManager.h"
+#include "RenderDistanceManager.h"
 #include "components/ogre/AvatarCameraMotionHandler.h"
 #include "components/ogre/authoring/AuthoringManager.h"
 #include "components/ogre/authoring/AuthoringMoverConnector.h"
@@ -107,6 +109,9 @@ World::World(Eris::View& view, Ogre::RenderWindow& renderWindow, Ember::OgreView
 	mConfigListenerContainer->registerConfigListener("graphics", "foliage", sigc::bind<-1>(sigc::mem_fun(*this, &World::Config_Foliage), sigc::ref(automaticGraphicsLevelManager)));
 
 	mLodLevelManager->initialize();
+	
+	mRenderDistanceManager = new RenderDistanceManager(automaticGraphicsLevelManager.getGraphicalAdapter(), *(mEnvironment->getFog()), mScene->getMainCamera());
+	mRenderDistanceManager->initialize();
 }
 
 World::~World()
@@ -135,6 +140,8 @@ World::~World()
 	Ogre::Root::getSingleton().removeFrameListener(mMotionManager);
 	delete mMotionManager;
 	mSignals.EventMotionManagerDestroyed();
+	
+	delete mRenderDistanceManager;
 
 	ISceneRenderingTechnique* technique = mScene->removeRenderingTechnique("forest");
 	delete technique;
@@ -212,6 +219,11 @@ Terrain::TerrainManager& World::getTerrainManager() const
 Lod::LodLevelManager& World::getLodLevelManager() const
 {
 	return *mLodLevelManager;
+}
+
+RenderDistanceManager& World::getRenderDistanceManager() const
+{
+	return *mRenderDistanceManager;
 }
 
 Environment::Environment* World::getEnvironment() const
